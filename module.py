@@ -170,3 +170,36 @@ def plot_ts(data, col, parameter, title='Time Series Plot'):
         print(f'The maximum {parameter} was observed on {data[col].idxmax()}')
         print(f'The minimum {parameter} was observed on {data[col].idxmin()}')
         plt.show()
+        
+   
+def hypothesis_testing(data,col,test_value, threshold, n_sample, two_tailed):
+    """
+    This function validates the hypothesis for a given sample mean, sample standard deviation and 
+    the threshold to which you want to validate the hypothesis.
+    This function can perform both one tailed and two tailed tests
+    Inputs:
+    data - The dataframe on which you want to validate your hypothsis 
+    col - The column of the dataframe on which you want to validate your hypothesis 
+    test_value - The value on which you want to test your hypothesis
+    threshold - The alpha value up to which you want to validate your hypothesis 
+    two_tailed - (Boolean value) whether you want to perform one tailed or two tailed tests
+    Returns: None
+    """
+    sample_mean = np.mean(data[col])
+    sample_std = (np.std(data[col]))/(math.sqrt(n_sample))
+    if threshold>1:
+        raise ValueError('The threshold should be between 0 and 1, try dividing the threshold value by 100')
+    z_score = (test_value-sample_mean)/sample_std
+    if two_tailed:
+        threshold = threshold/2
+        z_critical = abs(norm.ppf(threshold))
+        if abs(z_score)>z_critical:
+            print(f'Hypothesis rejected as the z score is {z_score} which is more than the z critical {z_critical}')
+        else:
+            print(f'Hypothesis accpeted as the z score is {z_score} which is less than the z critical {z_critical}')
+    else:
+        z_critical = abs(norm.ppf(threshold))
+        if abs(z_score)>z_critical:
+            print(f'Hypothesis rejected as the z score is {z_score} which is more than the z critical {z_critical}')
+        else:
+            print(f'Hypothesis accpeted as the z score is {z_score} which is less than the z critical {z_critical}')

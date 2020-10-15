@@ -185,11 +185,12 @@ def hypothesis_testing(data,col,test_value, threshold, n_sample, two_tailed):
     two_tailed - (Boolean value) whether you want to perform one tailed or two tailed tests
     Returns: None
     """
-    sample_mean = np.mean(data[col])
-    sample_std = (np.std(data[col]))/(math.sqrt(n_sample))
+    mean=np.mean(data[col])
+    std=(np.std(data[col]))/math.sqrt(n_sample)
     if threshold>1:
         raise ValueError('The threshold should be between 0 and 1, try dividing the threshold value by 100')
-    z_score = (test_value-sample_mean)/sample_std
+    
+    z_score = (test_value-mean)/std
     if two_tailed:
         threshold = threshold/2
         z_critical = abs(norm.ppf(threshold))
